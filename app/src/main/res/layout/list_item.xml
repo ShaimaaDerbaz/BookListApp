@@ -9,9 +9,9 @@
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:layout_marginRight="10dp"
-           android:text="Book Name :"
-           android:textSize="18sp"
+           android:layout_marginRight="@dimen/listMargin"
+           android:text="@string/book_name"
+           android:textSize="@dimen/listTextSize"
            android:textColor="@color/colorPrimary"/>
        <TextView
            android:id="@+id/item_title_text_view"
@@ -25,9 +25,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="Author          :"
-            android:textSize="18sp"
+            android:layout_marginRight="@dimen/listMargin"
+            android:text="@string/author"
+            android:textSize="@dimen/listTextSize"
             android:textColor="@color/colorPrimary"/>
 
         <TextView
@@ -43,9 +43,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="Publisher     : "
-            android:textSize="18sp"
+            android:layout_marginRight="@dimen/listMargin"
+            android:text="@string/publisher"
+            android:textSize="@dimen/listTextSize"
             android:textColor="@color/colorPrimary"/>
          <TextView
             android:id="@+id/item_publisher_text_view"
@@ -59,9 +59,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="About Book :"
-            android:textSize="18sp"
+            android:layout_marginRight="@dimen/listMargin"
+            android:text="@string/about_book"
+            android:textSize="@dimen/listTextSize"
             android:textColor="@color/colorPrimary"/>
         <TextView
             android:id="@+id/item_description_text_view"
@@ -71,6 +71,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:gravity="center"
+        android:layout_marginTop="@dimen/listMargin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

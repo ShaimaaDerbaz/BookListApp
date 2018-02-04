@@ -6,11 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -34,17 +36,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BookListActivity extends AppCompatActivity {
 
     public static String URL_USGS  ;
-    //  URL url=new URL(URL_USGS) ;
     ListView bookListView ;
     BookListAdapter mAdapter;
-
-
-
-
 
     public static ArrayList<Book> fetchBookData(String requestUrl) {
 
@@ -62,8 +60,6 @@ public class BookListActivity extends AppCompatActivity {
 
 
         ArrayList<Book> books = BookParser.extractFeatureFromJson(jsonResponse);
-
-
         return books;
     }
 
@@ -77,24 +73,13 @@ public class BookListActivity extends AppCompatActivity {
             searchWord = extras.getString("searchWord");
         }
 
-        URL_USGS = "https://www.googleapis.com/books/v1/volumes?q="+searchWord+"&maxResults=20";
+        URL_USGS = "https://www.googleapis.com/books/v1/volumes?q="+searchWord+"&maxResults=30";
         bookListView = (ListView) findViewById(R.id.activity_book_list);
         URL URLus=Utils.createUrl(URL_USGS);
         BookListActivity.BookAsyncTask task=new BookListActivity.BookAsyncTask(this);
         task.execute(URLus);
 
-        ///
 
-        bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                Book currentBook = mAdapter.getItem(position);
-             //   Uri bookUri = Uri.parse(currentBook.getUrl());
-               // Intent websiteIntent = new Intent(Intent.ACTION_VIEW, bookUri);
-             //   startActivity(websiteIntent);
-            }
-        });
     }
 
     private class BookAsyncTask extends AsyncTask<URL, Integer ,ArrayList<Book>>
@@ -120,6 +105,7 @@ public class BookListActivity extends AppCompatActivity {
             }
             mAdapter = new BookListAdapter(mContext,result);
             bookListView.setAdapter(mAdapter);
+
 
         }
     }

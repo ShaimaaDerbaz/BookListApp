@@ -17,14 +17,14 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        EditText searchWord=(EditText)findViewById(R.id.query_edittext);
-         String searchResult =searchWord.getText().toString();
         Button search =(Button) findViewById(R.id.search_button);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText searchWord=(EditText)findViewById(R.id.query_edittext);
+                String searchResult =searchWord.getText().toString();
                 Intent i =new Intent(MainActivity.this,BookListActivity.class);
-                i.putExtra("searchWord","searchResult");
+                i.putExtra("searchWord",searchResult);
                 startActivity(i);
 
             }

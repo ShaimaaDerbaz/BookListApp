@@ -3,4 +3,13 @@
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
     <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="textSearchSize">20sp</dimen>
+    <dimen name="editTextWidth">250dp</dimen>
+    <dimen name="editTextHeight">40dp</dimen>
+    <dimen name="mainMargin">25dp</dimen>
+    <dimen name="buttonWidth">250dp</dimen>
+    <dimen name="buttonHeight">35dp</dimen>
+    <dimen name="textButtonSize">20sp</dimen>
+    <dimen name="listMargin">10dp</dimen>
+    <dimen name="listTextSize">18sp</dimen>
 </resources>

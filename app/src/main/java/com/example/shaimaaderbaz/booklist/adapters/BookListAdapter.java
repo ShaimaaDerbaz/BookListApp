@@ -30,6 +30,7 @@ public class BookListAdapter extends ArrayAdapter<Book> {
 
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;
@@ -51,7 +52,7 @@ public class BookListAdapter extends ArrayAdapter<Book> {
         Picasso.with(getContext())
                 .load(currentItem.getThumbnail())
                 .resize(600,900).into(itemImageView);
-       // itemImageView.setImageURI(currentItem.getThumbnail());
+
 
 
 

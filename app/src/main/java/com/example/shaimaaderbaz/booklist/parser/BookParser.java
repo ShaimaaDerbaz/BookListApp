@@ -34,18 +34,23 @@ public class BookParser {
                 JSONObject imagesLink=valuesInfo.getJSONObject("imageLinks");
                 String title = valuesInfo.getString("title");
                 String author=" ";
+                String authorsAll="";
                 if(valuesInfo.has("authors")) {
                     JSONArray authors = valuesInfo.getJSONArray("authors");
-                    author = authors.getString(0);
+                    for (int j=0;j<authors.length();j++) {
+                        author = authors.getString(j);
+                        authorsAll +=" , ";
+                        authorsAll +=author ;
+                    }
                 }
                 else
                 {
-                     author = " ";
+                    authorsAll = " ";
                 }
                 String publisher = valuesInfo.getString("publisher");
                 String description = valuesInfo.getString("description");
                 String image = imagesLink.getString("thumbnail");
-                Book book = new Book(title, author, publisher, description,image);
+                Book book = new Book(title, authorsAll, publisher, description,image);
                 books.add(book);
 
             }
