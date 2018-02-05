@@ -3,9 +3,12 @@ package com.example.shaimaaderbaz.booklist.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +31,8 @@ public class BookListActivity extends AppCompatActivity {
     public static String URL_USGS  ;
     ListView bookListView ;
     BookListAdapter mAdapter;
-
+    private static final String LIST_STATE = "listState";
+    private Parcelable mListState = null;
     public static ArrayList<Book> fetchBookData(String requestUrl) {
 
         URL url = Utils.createUrl(requestUrl);
@@ -48,10 +52,26 @@ public class BookListActivity extends AppCompatActivity {
         return books;
     }
 
+
+    Parcelable state;
+
+    @Override
+    public void onPause() {
+        // Save ListView state @ onPause
+        Log.d("", "saving listview state @ onPause");
+        state = bookListView.onSaveInstanceState();
+        super.onPause();
+    }
+
+ 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+        if(state != null) {
+            Log.d("", "trying to restore listview state..");
+            bookListView.onRestoreInstanceState(state);
+        }
         String searchWord="";
 
         Bundle extras = getIntent().getExtras();
