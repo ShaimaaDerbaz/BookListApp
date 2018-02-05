@@ -11,6 +11,8 @@ public class Book {
     private String description;
     private String thumbnail;
 
+    public Book()
+    {}
 
     public Book(String title, String author, String publisher, String description, String thumbnail) {
         this.title = title;
@@ -18,6 +20,7 @@ public class Book {
         this.publisher = publisher;
         this.description = description;
         this.thumbnail = thumbnail;
+
     }
 
     public String getTitle() {
@@ -59,4 +62,5 @@ public class Book {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
+
 }

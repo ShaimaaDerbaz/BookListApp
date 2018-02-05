@@ -1,8 +1,6 @@
 package com.example.shaimaaderbaz.booklist.adapters;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +10,8 @@ import android.widget.TextView;
 
 import com.example.shaimaaderbaz.booklist.R;
 import com.example.shaimaaderbaz.booklist.models.Book;
-import com.example.shaimaaderbaz.booklist.utils.Utils;
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 /**

@@ -1,42 +1,27 @@
 package com.example.shaimaaderbaz.booklist.activities;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shaimaaderbaz.booklist.R;
 import com.example.shaimaaderbaz.booklist.adapters.BookListAdapter;
 import com.example.shaimaaderbaz.booklist.models.Book;
 import com.example.shaimaaderbaz.booklist.parser.BookParser;
+import com.example.shaimaaderbaz.booklist.utils.NetworkConnect;
 import com.example.shaimaaderbaz.booklist.utils.Utils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xml.sax.Parser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+import java.io.IOException;;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class BookListActivity extends AppCompatActivity {
 
@@ -68,6 +53,7 @@ public class BookListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
         String searchWord="";
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             searchWord = extras.getString("searchWord");
@@ -76,8 +62,37 @@ public class BookListActivity extends AppCompatActivity {
         URL_USGS = "https://www.googleapis.com/books/v1/volumes?q="+searchWord+"&maxResults=30";
         bookListView = (ListView) findViewById(R.id.activity_book_list);
         URL URLus=Utils.createUrl(URL_USGS);
-        BookListActivity.BookAsyncTask task=new BookListActivity.BookAsyncTask(this);
-        task.execute(URLus);
+
+        Context context = getApplicationContext();
+        CharSequence text = "No Internet ,Please connect";
+        int duration = Toast.LENGTH_SHORT;
+        try {
+            if (NetworkConnect.isConnected()==true)
+            {
+                BookListActivity.BookAsyncTask task=new BookListActivity.BookAsyncTask(this);
+                task.execute(URLus);
+            }
+            else
+            {
+
+                Toast toast =Toast.makeText(context,text,duration);
+                toast.show();
+            }
+        }catch (InterruptedException e )
+        {
+
+            Toast toast =Toast.makeText(context,text,duration);
+            toast.show();
+        }
+        catch( IOException ee)
+        {
+
+            Toast toast =Toast.makeText(context,text,duration);
+            //toast.show();
+
+        }
+
+
 
 
     }
@@ -99,9 +114,12 @@ public class BookListActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Book> result)
         {
 
-            if (result == null)
+            if (result == null ||result.size()==0)
             {
-                return;
+                TextView textview=(TextView)findViewById(R.id.checkedTextView);
+                textview.setVisibility(TextView.VISIBLE);
+                bookListView.setVisibility(ListView.GONE);
+
             }
             mAdapter = new BookListAdapter(mContext,result);
             bookListView.setAdapter(mAdapter);
