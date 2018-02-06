@@ -7,8 +7,6 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,11 +26,11 @@ import java.util.ArrayList;
 
 public class BookListActivity extends AppCompatActivity {
 
-    public static String URL_USGS  ;
+    private static final String BOOK_LIST_KEY = "books_list";
+    public static String URL_Books;
     ListView bookListView ;
     BookListAdapter mAdapter;
     private static final String LIST_STATE = "listState";
-    private Parcelable mListState = null;
     public static ArrayList<Book> fetchBookData(String requestUrl) {
 
         URL url = Utils.createUrl(requestUrl);
@@ -53,13 +51,12 @@ public class BookListActivity extends AppCompatActivity {
     }
 
 
-    Parcelable state;
+    private Parcelable state;
 
     @Override
     public void onPause() {
         // Save ListView state @ onPause
         Log.d("", "saving listview state @ onPause");
-        state = bookListView.onSaveInstanceState();
         super.onPause();
     }
 
@@ -68,9 +65,9 @@ public class BookListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
-        if(state != null) {
+        if(savedInstanceState != null) {
             Log.d("", "trying to restore listview state..");
-            bookListView.onRestoreInstanceState(state);
+            state = savedInstanceState.getParcelable(LIST_STATE);
         }
         String searchWord="";
 
@@ -79,9 +76,9 @@ public class BookListActivity extends AppCompatActivity {
             searchWord = extras.getString("searchWord");
         }
 
-        URL_USGS = "https://www.googleapis.com/books/v1/volumes?q="+searchWord+"&maxResults=30";
+        URL_Books = "https://www.googleapis.com/books/v1/volumes?q="+searchWord+"&maxResults=30";
         bookListView = (ListView) findViewById(R.id.activity_book_list);
-        URL URLus=Utils.createUrl(URL_USGS);
+        URL URLus=Utils.createUrl(URL_Books);
 
         Context context = getApplicationContext();
         CharSequence text = "No Internet ,Please connect";
@@ -117,6 +114,13 @@ public class BookListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        state = bookListView.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE,state);
+    }
+
     private class BookAsyncTask extends AsyncTask<URL, Integer ,ArrayList<Book>>
     {
         private Activity mContext;
@@ -128,7 +132,7 @@ public class BookListActivity extends AppCompatActivity {
         protected ArrayList<Book> doInBackground (URL ... Url)
         {
 
-            ArrayList<Book> result = fetchBookData(URL_USGS);
+            ArrayList<Book> result = fetchBookData(URL_Books);
             return result;
         }
         protected void onPostExecute(ArrayList<Book> result)
@@ -139,10 +143,11 @@ public class BookListActivity extends AppCompatActivity {
                 TextView textview=(TextView)findViewById(R.id.checkedTextView);
                 textview.setVisibility(TextView.VISIBLE);
                 bookListView.setVisibility(ListView.GONE);
-
             }
             mAdapter = new BookListAdapter(mContext,result);
             bookListView.setAdapter(mAdapter);
+            if(state != null)
+                bookListView.onRestoreInstanceState(state);
 
 
         }
